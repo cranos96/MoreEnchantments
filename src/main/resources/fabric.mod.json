@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "more_enchantments",
+	"version": "${version}",
+	"name": "More enchantments",
+	"description": "Provide more enchanting choices for you!",
+	"authors": [
+		"ChengFeng"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/more_enchantments/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"cn.feng.enchant.MoreEnchantments"
+		],
+		"client": [
+			"cn.feng.enchant.MoreEnchantmentsClient"
+		]
+	},
+	"mixins": [
+		"more_enchantments.mixins.json",
+		{
+			"config": "more_enchantments.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

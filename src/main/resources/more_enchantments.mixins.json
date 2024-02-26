@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "cn.feng.enchant.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinAbstractHorseEntity",
+    "MixinEnchantment",
+    "MixinEntity",
+    "MixinLivingEntity",
+    "MixinMobEntity",
+    "MixinPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
