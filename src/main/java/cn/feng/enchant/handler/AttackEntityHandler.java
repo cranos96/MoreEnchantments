@@ -4,9 +4,11 @@ import cn.feng.enchant.MoreEnchantments;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -27,17 +29,36 @@ public class AttackEntityHandler implements AttackEntityCallback {
             player.sendMessage(Text.literal("你干嘛~哈哈呦~"));
         }
 
-        if (entity instanceof LivingEntity livingEntity) {
+        if (entity instanceof LivingEntity target) {
             Hand activeHand = player.getActiveHand();
             ItemStack item = player.getStackInHand(activeHand);
             if (!item.isEmpty() && EnchantmentHelper.getLevel(MoreEnchantments.HOT_POTATO, item) > 0) {
-                //TODO: 对象手里拿不到东西
-                Hand targetHand = livingEntity.getActiveHand();
-                ItemStack targetItem = livingEntity.getStackInHand(targetHand);
-                if (!targetItem.isEmpty()) {
-                    livingEntity.dropStack(targetItem);
+                if (item.getItem() instanceof ArmorItem armor) {
+                    switch (armor.getType()) {
+                        case HELMET -> {
+                            target.equipStack(EquipmentSlot.HEAD, item.copy());
+                        }
+
+                        case CHESTPLATE -> {
+                            target.equipStack(EquipmentSlot.CHEST, item.copy());
+                        }
+
+                        case LEGGINGS -> {
+                            target.equipStack(EquipmentSlot.LEGS, item.copy());
+                        }
+
+                        case BOOTS -> {
+                            target.equipStack(EquipmentSlot.FEET, item.copy());
+                        }
+                    }
+                } else {
+                    Hand targetHand = target.getActiveHand();
+                    ItemStack targetItem = target.getStackInHand(targetHand);
+                    if (!targetItem.isEmpty()) {
+                        target.dropStack(targetItem);
+                    }
+                    target.setStackInHand(targetHand, item.copy());
                 }
-                livingEntity.setStackInHand(targetHand, item.copy());
                 player.setStackInHand(activeHand, ItemStack.EMPTY);
             }
         }
