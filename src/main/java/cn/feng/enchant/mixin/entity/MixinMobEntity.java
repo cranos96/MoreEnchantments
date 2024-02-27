@@ -1,0 +1,71 @@
+package cn.feng.enchant.mixin.entity;
+
+import cn.feng.enchant.MoreEnchantments;
+import cn.feng.enchant.util.ItemUtil;
+import cn.feng.enchant.util.TimerUtil;
+import cn.feng.enchant.util.WorldUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+/**
+ * @author ChengFeng
+ * @since 2024/2/25
+ **/
+@Mixin(MobEntity.class)
+public abstract class MixinMobEntity extends MixinLivingEntity {
+    @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+
+    @Shadow protected abstract float getDropChance(EquipmentSlot slot);
+
+    @Shadow public abstract void equipStack(EquipmentSlot slot, ItemStack stack);
+
+    @Unique
+    private TimerUtil timerUtil = new TimerUtil();
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tick(CallbackInfo ci) {
+        if (((Object) this) instanceof HostileEntity entity) {
+            if (!timerUtil.hasDelayed(100)) return;
+            WorldUtil.armorLightning(entity);
+            timerUtil.reset();
+        }
+    }
+
+    /**
+     * @author ChengFeng
+     * @reason Schrodinger Curse
+     */
+    @Overwrite
+    public void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+            boolean bl;
+            ItemStack itemStack = this.getEquippedStack(equipmentSlot);
+
+            if (EnchantmentHelper.getLevel(MoreEnchantments.SCHRODINGER_CURSE, itemStack) > 0) {
+                ItemStack newStack = ItemUtil.randomItem().getDefaultStack();
+                this.equipStack(equipmentSlot, newStack);
+                itemStack = newStack;
+            }
+
+            float f = this.getDropChance(equipmentSlot);
+            bl = f > 1.0f;
+            if (itemStack.isEmpty() || EnchantmentHelper.hasVanishingCurse(itemStack) || !allowDrops && !bl || !(Math.max(this.random.nextFloat() - (float)lootingMultiplier * 0.01f, 0.0f) < f)) continue;
+            if (!bl && itemStack.isDamageable()) {
+                itemStack.setDamage(itemStack.getMaxDamage() - this.random.nextInt(1 + this.random.nextInt(Math.max(itemStack.getMaxDamage() - 3, 1))));
+            }
+            this.dropStack(itemStack);
+            this.equipStack(equipmentSlot, ItemStack.EMPTY);
+        }
+    }
+}
