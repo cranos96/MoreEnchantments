@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Shadow;
  **/
 @Mixin(Entity.class)
 public abstract class MixinEntity {
+    @Shadow public float fallDistance;
     @Shadow
     @Final
     protected Random random;

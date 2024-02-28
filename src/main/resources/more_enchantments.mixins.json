@@ -3,18 +3,19 @@
   "package": "cn.feng.enchant.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MixinEnchantment",
     "entity.MixinAbstractHorseEntity",
     "entity.MixinAnimalEntity",
-    "handler.MixinAnvilScreenHandler",
-    "MixinEnchantment",
     "entity.MixinEntity",
-    "handler.MixinForgingScreenHandler",
     "entity.MixinLivingEntity",
     "entity.MixinMobEntity",
     "entity.MixinPassiveEntity",
     "entity.MixinPathAwareEntity",
     "entity.MixinPlayerEntity",
-    "handler.MixinScreenHandler"
+    "handler.MixinAnvilScreenHandler",
+    "handler.MixinForgingScreenHandler",
+    "handler.MixinScreenHandler",
+    "network.MixinClientConnection"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,14 +1,18 @@
 package cn.feng.enchant.mixin.entity;
 
+import cn.feng.enchant.MoreEnchantments;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -20,8 +24,10 @@ import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -41,6 +47,27 @@ public abstract class MixinLivingEntity extends MixinEntity {
 
     @Shadow public abstract void equipStack(EquipmentSlot var1, ItemStack var2);
 
+    @Shadow public abstract Iterable<ItemStack> getArmorItems();
+
+    @Shadow protected boolean jumping;
+
+    @Shadow private int jumpingCooldown;
+
+    @Shadow protected abstract void jump();
+
+
+    @Unique
+    private boolean hasAirJump() {
+        for (ItemStack item : this.getArmorItems()) {
+            if (item.getItem() instanceof ArmorItem armor && armor.getSlotType() == EquipmentSlot.FEET
+                    && EnchantmentHelper.getLevel(MoreEnchantments.AIR_JUMP, item) > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Infinity food
      */
@@ -48,6 +75,37 @@ public abstract class MixinLivingEntity extends MixinEntity {
     private void increaseFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         if (EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0) {
             stack.increment(1);
+        }
+    }
+
+    @Inject(method = "tickMovement", at = @At("HEAD"))
+    private void injectScud(CallbackInfo ci) {
+        for (ItemStack item : this.getArmorItems()) {
+            if (item.getItem() instanceof ArmorItem armor) {
+                if (armor.getSlotType() == EquipmentSlot.LEGS
+                        && EnchantmentHelper.getLevel(MoreEnchantments.SCUD, item) > 0) {
+                    this.jumpingCooldown = 0;
+                    if (((Object) this) instanceof PlayerEntity player) {
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 1));
+
+
+                        if (player.forwardSpeed > 0) {
+                            player.setSprinting(true);
+                        }
+                    }
+                } else if (armor.getSlotType() == EquipmentSlot.FEET
+                    && EnchantmentHelper.getLevel(MoreEnchantments.LIGHT_KUNGFU, item) > 0) {
+                    this.fallDistance = 0;
+                }
+            }
+        }
+    }
+
+    @Inject(method = "tickMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
+    private void injectAirJump(CallbackInfo ci) {
+        if (hasAirJump() && jumping && jumpingCooldown == 0) {
+            this.jump();
+            this.jumpingCooldown = 10;
         }
     }
 

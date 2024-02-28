@@ -1,8 +1,6 @@
 package cn.feng.enchant;
 
-import cn.feng.enchant.enchantment.HotPotatoEnchantment;
-import cn.feng.enchant.enchantment.LightningGodEnchantment;
-import cn.feng.enchant.enchantment.SchrodingerCurseEnchantment;
+import cn.feng.enchant.enchantment.*;
 import cn.feng.enchant.handler.AttackEntityHandler;
 import cn.feng.enchant.util.ItemUtil;
 import net.fabricmc.api.ModInitializer;
@@ -25,11 +23,12 @@ public class MoreEnchantments implements ModInitializer {
 	public static final Enchantment LIGHTNING_GOD = register("lightning_god", new LightningGodEnchantment());
 	public static final Enchantment HOT_POTATO = register("hot_potato",  new HotPotatoEnchantment());
 	public static final Enchantment SCHRODINGER_CURSE = register("schrodinger_curse", new SchrodingerCurseEnchantment());
+	public static final Enchantment AIR_JUMP = register("air_jump", new AirJumpEnchantment());
+	public static final Enchantment SCUD = register("scud", new ScudEnchantment());
+	public static final Enchantment LIGHT_KUNGFU = register("light_kungfu", new LightKongFuEnchantment());
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
-
 		// Register handlers
 		AttackEntityCallback.EVENT.register(new AttackEntityHandler());
 
