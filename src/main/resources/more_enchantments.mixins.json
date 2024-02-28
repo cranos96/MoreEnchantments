@@ -14,8 +14,7 @@
     "entity.MixinPlayerEntity",
     "handler.MixinAnvilScreenHandler",
     "handler.MixinForgingScreenHandler",
-    "handler.MixinScreenHandler",
-    "network.MixinClientConnection"
+    "handler.MixinScreenHandler"
   ],
   "injectors": {
     "defaultRequire": 1
