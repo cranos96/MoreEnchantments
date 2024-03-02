@@ -1,7 +1,6 @@
 package cn.feng.enchant.util;
 
 import cn.feng.enchant.MoreEnchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
@@ -31,7 +30,7 @@ public class WorldUtil {
     public static void armorLightning(LivingEntity entity) {
         boolean channeling = false;
         for (ItemStack armor : entity.getArmorItems()) {
-            channeling = EnchantmentHelper.getLevel(MoreEnchantments.LIGHTNING_GOD, armor) > 0;
+            channeling = EnchantUtil.has(armor, MoreEnchantments.LIGHTNING_GOD, 1);
             if (channeling) break;
         }
         if (channeling) {

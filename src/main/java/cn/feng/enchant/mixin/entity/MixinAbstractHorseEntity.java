@@ -1,6 +1,7 @@
 package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
+import cn.feng.enchant.util.EnchantUtil;
 import cn.feng.enchant.util.ItemUtil;
 import cn.feng.enchant.util.TimerUtil;
 import cn.feng.enchant.util.WorldUtil;
@@ -38,7 +39,7 @@ public abstract class MixinAbstractHorseEntity extends MixinAnimalEntity {
         ItemStack armor = this.items.getStack(1);
         if (passenger == null) return;
 
-        if (EnchantmentHelper.getLevel(MoreEnchantments.LIGHTNING_GOD, armor) > 0) {
+        if (EnchantUtil.has(armor, MoreEnchantments.LIGHTNING_GOD, 1)) {
             if (!timerUtil.hasDelayed(100)) return;
             WorldUtil.summonLightningNearby(passenger.getBlockPos(), passenger);
         }
@@ -57,7 +58,7 @@ public abstract class MixinAbstractHorseEntity extends MixinAnimalEntity {
             ItemStack itemStack = this.items.getStack(i);
             if (itemStack.isEmpty()) continue;
             if (EnchantmentHelper.hasVanishingCurse(itemStack)) continue;
-            if (EnchantmentHelper.getLevel(MoreEnchantments.SCHRODINGER_CURSE, itemStack) > 0) {
+            if (EnchantUtil.has(itemStack, MoreEnchantments.SCHRODINGER_CURSE, 1)) {
                 ItemStack newStack = ItemUtil.randomItem().getDefaultStack();
                 this.items.setStack(i, newStack);
                 itemStack = newStack;

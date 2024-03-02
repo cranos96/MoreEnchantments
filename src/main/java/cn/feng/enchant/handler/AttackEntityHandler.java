@@ -1,8 +1,8 @@
 package cn.feng.enchant.handler;
 
 import cn.feng.enchant.MoreEnchantments;
+import cn.feng.enchant.util.EnchantUtil;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +32,7 @@ public class AttackEntityHandler implements AttackEntityCallback {
         if (entity instanceof LivingEntity target) {
             Hand activeHand = player.getActiveHand();
             ItemStack item = player.getStackInHand(activeHand);
-            if (!item.isEmpty() && EnchantmentHelper.getLevel(MoreEnchantments.HOT_POTATO, item) > 0) {
+            if (!item.isEmpty() && EnchantUtil.has(item, MoreEnchantments.HOT_POTATO, 1)) {
                 if (item.getItem() instanceof ArmorItem armor) {
                     switch (armor.getType()) {
                         case HELMET -> {

@@ -1,6 +1,7 @@
 package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
+import cn.feng.enchant.util.EnchantUtil;
 import cn.feng.enchant.util.ItemUtil;
 import cn.feng.enchant.util.TimerUtil;
 import cn.feng.enchant.util.WorldUtil;
@@ -52,7 +53,7 @@ public abstract class MixinMobEntity extends MixinLivingEntity {
             boolean bl;
             ItemStack itemStack = this.getEquippedStack(equipmentSlot);
 
-            if (EnchantmentHelper.getLevel(MoreEnchantments.SCHRODINGER_CURSE, itemStack) > 0) {
+            if (EnchantUtil.has(itemStack, MoreEnchantments.SCHRODINGER_CURSE, 1)) {
                 ItemStack newStack = ItemUtil.randomItem().getDefaultStack();
                 this.equipStack(equipmentSlot, newStack);
                 itemStack = newStack;

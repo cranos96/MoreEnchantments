@@ -1,10 +1,9 @@
 package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
+import cn.feng.enchant.util.EnchantUtil;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -37,30 +36,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends MixinEntity {
 
-    @Shadow public abstract ItemStack getStackInHand(Hand hand);
+    @Shadow
+    protected boolean jumping;
+    @Shadow
+    private int jumpingCooldown;
 
-    @Shadow public abstract void setHealth(float health);
+    @Shadow
+    public abstract ItemStack getStackInHand(Hand hand);
 
-    @Shadow public abstract boolean clearStatusEffects();
+    @Shadow
+    public abstract void setHealth(float health);
 
-    @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
+    @Shadow
+    public abstract boolean clearStatusEffects();
 
-    @Shadow public abstract void equipStack(EquipmentSlot var1, ItemStack var2);
+    @Shadow
+    public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
-    @Shadow public abstract Iterable<ItemStack> getArmorItems();
+    @Shadow
+    public abstract void equipStack(EquipmentSlot var1, ItemStack var2);
 
-    @Shadow protected boolean jumping;
+    @Shadow
+    public abstract Iterable<ItemStack> getArmorItems();
 
-    @Shadow private int jumpingCooldown;
-
-    @Shadow protected abstract void jump();
+    @Shadow
+    protected abstract void jump();
 
 
     @Unique
     private boolean hasAirJump() {
         for (ItemStack item : this.getArmorItems()) {
             if (item.getItem() instanceof ArmorItem armor && armor.getSlotType() == EquipmentSlot.FEET
-                    && EnchantmentHelper.getLevel(MoreEnchantments.AIR_JUMP, item) > 0) {
+                    && EnchantUtil.has(item, MoreEnchantments.AIR_JUMP, 1)) {
                 return true;
             }
         }
@@ -73,7 +80,7 @@ public abstract class MixinLivingEntity extends MixinEntity {
      */
     @Inject(method = "eatFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V"))
     private void increaseFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-        if (EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0) {
+        if (EnchantUtil.has(stack, Enchantments.INFINITY, 1)) {
             stack.increment(1);
         }
     }
@@ -83,7 +90,7 @@ public abstract class MixinLivingEntity extends MixinEntity {
         for (ItemStack item : this.getArmorItems()) {
             if (item.getItem() instanceof ArmorItem armor) {
                 if (armor.getSlotType() == EquipmentSlot.LEGS
-                        && EnchantmentHelper.getLevel(MoreEnchantments.SCUD, item) > 0) {
+                        && EnchantUtil.has(item, MoreEnchantments.SCUD, 1)) {
                     this.jumpingCooldown = 0;
                     if (((Object) this) instanceof PlayerEntity player) {
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 1));
@@ -94,7 +101,7 @@ public abstract class MixinLivingEntity extends MixinEntity {
                         }
                     }
                 } else if (armor.getSlotType() == EquipmentSlot.FEET
-                    && EnchantmentHelper.getLevel(MoreEnchantments.LIGHT_KUNGFU, item) > 0) {
+                        && EnchantUtil.has(item, MoreEnchantments.LIGHT_KUNGFU, 1)) {
                     this.fallDistance = 0;
                 }
             }
@@ -123,7 +130,7 @@ public abstract class MixinLivingEntity extends MixinEntity {
             ItemStack itemStack2 = this.getStackInHand(hand);
             if (!itemStack2.isOf(Items.TOTEM_OF_UNDYING)) continue;
             itemStack = itemStack2.copy();
-            if (EnchantmentHelper.getLevel(Enchantments.INFINITY, itemStack2) == 0) {
+            if (!EnchantUtil.has(itemStack2, Enchantments.INFINITY, 1)) {
                 itemStack2.decrement(1);
             }
             break;
