@@ -10,6 +10,6 @@ import net.minecraft.entity.EquipmentSlot;
  **/
 public class LightningGodEnchantment extends Enchantment {
     public LightningGodEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.ARMOR, EquipmentSlot.values());
+        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR, EquipmentSlot.values());
     }
 }

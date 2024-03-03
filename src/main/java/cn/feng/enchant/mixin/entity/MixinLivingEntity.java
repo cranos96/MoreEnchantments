@@ -2,6 +2,7 @@ package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
 import cn.feng.enchant.util.EnchantUtil;
+import cn.feng.enchant.util.EntityUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityStatuses;

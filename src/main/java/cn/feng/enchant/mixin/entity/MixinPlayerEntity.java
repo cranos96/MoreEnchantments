@@ -1,11 +1,10 @@
 package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
-import cn.feng.enchant.util.EnchantUtil;
-import cn.feng.enchant.util.ItemUtil;
-import cn.feng.enchant.util.TimerUtil;
-import cn.feng.enchant.util.WorldUtil;
+import cn.feng.enchant.util.*;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -32,6 +31,11 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
         if (!timerUtil.hasDelayed(100)) return;
         WorldUtil.armorLightning((PlayerEntity) (Object) this);
         timerUtil.reset();
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    private void attackEntity(Entity target, CallbackInfo ci) {
+        if (target instanceof LivingEntity livingEntity && EntityUtil.isUnSelectable(livingEntity)) ci.cancel();
     }
 
     /**

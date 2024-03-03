@@ -1,12 +1,11 @@
 package cn.feng.enchant.mixin.entity;
 
 import cn.feng.enchant.MoreEnchantments;
-import cn.feng.enchant.util.EnchantUtil;
-import cn.feng.enchant.util.ItemUtil;
-import cn.feng.enchant.util.TimerUtil;
-import cn.feng.enchant.util.WorldUtil;
+import cn.feng.enchant.util.*;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -18,6 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author ChengFeng
@@ -30,7 +30,6 @@ public abstract class MixinMobEntity extends MixinLivingEntity {
     @Shadow protected abstract float getDropChance(EquipmentSlot slot);
 
     @Shadow public abstract void equipStack(EquipmentSlot slot, ItemStack stack);
-
     @Unique
     private TimerUtil timerUtil = new TimerUtil();
 
@@ -40,6 +39,14 @@ public abstract class MixinMobEntity extends MixinLivingEntity {
             if (!timerUtil.hasDelayed(100)) return;
             WorldUtil.armorLightning(entity);
             timerUtil.reset();
+        }
+    }
+
+    @Inject(method = "tryAttack", at = @At("HEAD"), cancellable = true)
+    private void tryAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
+        if (target instanceof LivingEntity livingEntity && EntityUtil.isUnSelectable(livingEntity)) {
+            cir.setReturnValue(false);
+            cir.cancel();
         }
     }
 

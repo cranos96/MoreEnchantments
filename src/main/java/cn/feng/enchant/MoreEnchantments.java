@@ -26,6 +26,8 @@ public class MoreEnchantments implements ModInitializer {
 	public static final Enchantment AIR_JUMP = register("air_jump", new AirJumpEnchantment());
 	public static final Enchantment SCUD = register("scud", new ScudEnchantment());
 	public static final Enchantment LIGHT_KUNGFU = register("light_kungfu", new LightKongFuEnchantment());
+	public static final Enchantment UNSELECTABLE = register("unselectable", new UnselectableEnchantment());
+	public static final Enchantment BABY = register("baby", new BabyEnchantment());
 
 	@Override
 	public void onInitialize() {

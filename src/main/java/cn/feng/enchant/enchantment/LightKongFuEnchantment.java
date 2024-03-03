@@ -10,7 +10,7 @@ import net.minecraft.entity.EquipmentSlot;
  **/
 public class LightKongFuEnchantment extends Enchantment {
     public LightKongFuEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
     }
 
 

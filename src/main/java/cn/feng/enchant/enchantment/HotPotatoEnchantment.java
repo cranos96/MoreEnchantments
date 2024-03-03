@@ -10,6 +10,11 @@ import net.minecraft.entity.EquipmentSlot;
  **/
 public class HotPotatoEnchantment extends Enchantment {
     public HotPotatoEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    }
+
+    @Override
+    public boolean isCursed() {
+        return true;
     }
 }

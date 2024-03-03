@@ -10,6 +10,6 @@ import net.minecraft.entity.EquipmentSlot;
  **/
 public class ScudEnchantment extends Enchantment {
     public ScudEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.ARMOR_LEGS, new EquipmentSlot[]{EquipmentSlot.LEGS});
+        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR_LEGS, new EquipmentSlot[]{EquipmentSlot.LEGS});
     }
 }

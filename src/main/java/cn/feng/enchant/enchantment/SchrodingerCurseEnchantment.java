@@ -10,6 +10,11 @@ import net.minecraft.enchantment.EnchantmentTarget;
  **/
 public class SchrodingerCurseEnchantment extends Enchantment {
     public SchrodingerCurseEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.WEARABLE, MoreEnchantments.ALL_ARMOR);
+        super(Rarity.UNCOMMON, EnchantmentTarget.WEARABLE, MoreEnchantments.ALL_ARMOR);
+    }
+
+    @Override
+    public boolean isCursed() {
+        return true;
     }
 }
