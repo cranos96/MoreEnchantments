@@ -2,6 +2,7 @@ package cn.feng.enchant.handler;
 
 import cn.feng.enchant.MoreEnchantments;
 import cn.feng.enchant.util.EnchantUtil;
+import cn.feng.enchant.util.EntityUtil;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -30,36 +31,42 @@ public class AttackEntityHandler implements AttackEntityCallback {
         }
 
         if (entity instanceof LivingEntity target) {
+
+
             Hand activeHand = player.getActiveHand();
             ItemStack item = player.getStackInHand(activeHand);
-            if (!item.isEmpty() && EnchantUtil.has(item, MoreEnchantments.HOT_POTATO, 1)) {
-                if (item.getItem() instanceof ArmorItem armor) {
-                    switch (armor.getType()) {
-                        case HELMET -> {
-                            target.equipStack(EquipmentSlot.HEAD, item.copy());
-                        }
+            if (!item.isEmpty()) {
 
-                        case CHESTPLATE -> {
-                            target.equipStack(EquipmentSlot.CHEST, item.copy());
-                        }
+                // Hot potato
+                if (EnchantUtil.has(item, MoreEnchantments.HOT_POTATO, 1)) {
+                    if (item.getItem() instanceof ArmorItem armor) {
+                        switch (armor.getType()) {
+                            case HELMET -> {
+                                target.equipStack(EquipmentSlot.HEAD, item.copy());
+                            }
 
-                        case LEGGINGS -> {
-                            target.equipStack(EquipmentSlot.LEGS, item.copy());
-                        }
+                            case CHESTPLATE -> {
+                                target.equipStack(EquipmentSlot.CHEST, item.copy());
+                            }
 
-                        case BOOTS -> {
-                            target.equipStack(EquipmentSlot.FEET, item.copy());
+                            case LEGGINGS -> {
+                                target.equipStack(EquipmentSlot.LEGS, item.copy());
+                            }
+
+                            case BOOTS -> {
+                                target.equipStack(EquipmentSlot.FEET, item.copy());
+                            }
                         }
+                    } else {
+                        Hand targetHand = target.getActiveHand();
+                        ItemStack targetItem = target.getStackInHand(targetHand);
+                        if (!targetItem.isEmpty()) {
+                            target.dropStack(targetItem);
+                        }
+                        target.setStackInHand(targetHand, item.copy());
                     }
-                } else {
-                    Hand targetHand = target.getActiveHand();
-                    ItemStack targetItem = target.getStackInHand(targetHand);
-                    if (!targetItem.isEmpty()) {
-                        target.dropStack(targetItem);
-                    }
-                    target.setStackInHand(targetHand, item.copy());
+                    player.setStackInHand(activeHand, ItemStack.EMPTY);
                 }
-                player.setStackInHand(activeHand, ItemStack.EMPTY);
             }
         }
 

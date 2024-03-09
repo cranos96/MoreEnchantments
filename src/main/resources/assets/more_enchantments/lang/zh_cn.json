@@ -1,10 +1,14 @@
 {
+  "death.attack.tooOld": "%1$s 阳寿已尽",
+  "death.attack.tooYoung": "%1$s 回到了娘胎里",
   "enchantment.more_enchantments.air_jump": "踏空而行",
   "enchantment.more_enchantments.baby": "返老还童",
   "enchantment.more_enchantments.hot_potato": "烫手山芋",
+  "enchantment.more_enchantments.life_shortening": "折寿",
   "enchantment.more_enchantments.light_kungfu": "轻功",
   "enchantment.more_enchantments.lightning_god": "雷神",
   "enchantment.more_enchantments.schrodinger_curse": "薛定谔的诅咒",
   "enchantment.more_enchantments.scud": "飞毛腿",
-  "enchantment.more_enchantments.unselectable": "无法选中"
+  "enchantment.more_enchantments.unselectable": "无法选中",
+  "entity.age": "年龄: %d"
 }

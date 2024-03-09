@@ -3,8 +3,12 @@
   "enchantment.more_enchantments.baby": "Baby",
   "enchantment.more_enchantments.light_kungfu": "Light Kung Fu",
   "enchantment.more_enchantments.lightning_god": "Lightning God",
+  "enchantment.more_enchantments.life_shortening": "Life Shortening",
   "enchantment.more_enchantments.hot_potato": "Hot Potato",
   "enchantment.more_enchantments.schrodinger_curse": "Schrodinger's Curse",
   "enchantment.more_enchantments.scud": "Scud",
-  "enchantment.more_enchantments.unselectable": "Unselectable"
+  "enchantment.more_enchantments.unselectable": "Unselectable",
+  "death.attack.tooOld": "%1$s was too old",
+  "death.attack.tooYoung": "%1$s has not burn yet",
+  "entity.age": "Age: %d"
 }
