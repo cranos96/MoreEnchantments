@@ -5,7 +5,8 @@
   "client": [
     "render.MixinEntityRenderDispatcher",
     "render.MixinEntityRenderer",
-    "render.MixinLivingEntityRenderer"
+    "render.MixinLivingEntityRenderer",
+    "screen.MixinHandledScreen"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -37,6 +38,8 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract void emitGameEvent(GameEvent event);
+
+    @Shadow public abstract @Nullable ItemEntity dropItem(ItemConvertible item);
 
     @Inject(method = "getTargetingMargin", at = @At("RETURN"), cancellable = true)
     private void hookMargin(CallbackInfoReturnable<Float> callback) {

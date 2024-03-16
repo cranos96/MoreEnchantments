@@ -31,6 +31,7 @@ public class MoreEnchantments implements ModInitializer {
 	public static final Enchantment UNSELECTABLE = regEnchant("unselectable", new UnselectableEnchantment());
 	public static final Enchantment BABY = regEnchant("baby", new BabyEnchantment());
 	public static final Enchantment LIFE_SHORTENING = regEnchant("life_shortening", new LifeShorteningEnchantment());
+	public static final Enchantment SOAP = regEnchant("soap", new SoapEnchantment());
 
 	@Override
 	public void onInitialize() {
