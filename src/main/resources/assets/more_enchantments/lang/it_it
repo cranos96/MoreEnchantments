@@ -1,0 +1,15 @@
+{
+  "enchantment.more_enchantments.air_jump": "Salto in aria",
+  "enchantment.more_enchantments.baby": "Bambino",
+  "enchantment.more_enchantments.light_kungfu": "Kung Fu leggero",
+  "enchantment.more_enchantments.lightning_god": "Dio del fulmine",
+  "enchantment.more_enchantments.life_shortening": "Accorciamento della vita",
+  "enchantment.more_enchantments.hot_potato": "Patata bollente",
+  "enchantment.more_enchantments.schrodinger_curse": "La maledizione di Schrodinger",
+  "enchantment.more_enchantments.scud": "Scudo",
+  "enchantment.more_enchantments.unselectable": "Non selezionabile",
+  "enchantment.more_enchantments.soap": "Sapone",
+  "death.attack.tooOld": "%1$s era troppo vecchio",
+  "death.attack.tooYoung": "%1$s non è ancora bruciato",
+  "entity.age": "Età: %d"
+}
